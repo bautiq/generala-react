@@ -3,13 +3,15 @@ import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 
 import Registration from './app/scenes/Registration';
 import Login from './app/scenes/Login';
+import Dado from './app/components/Dado';
+import Game from './app/scenes/Game';
 
 
 export default function App() {
    return (
-    <View style={styles.container}>
-      <Login/>
-     </View>
+    
+      <Game/>
+     
   );
 }
 
