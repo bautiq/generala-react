@@ -1,28 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import { StyleSheet, Text, SafeAreaView, ScrollView, Button, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import LeaderboardCell from '../components/LeaderboardCell';
 
+export default class Leaderboard extends Component {
 
-export default function Leaderboard() {
+  render(){
     return(<SafeAreaView style={styles.container}> 
-    <Text style={styles.title}/>
-    <ScrollView style={styles.scrollView}>
-
-    <LeaderboardCell/>
-    <LeaderboardCell/>
-    <LeaderboardCell/>
-    </ScrollView>
-
-    <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Jugar denuevo</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Ir a inicio</Text>
-      </TouchableOpacity>
-    </SafeAreaView>);
+      
+      <ScrollView style={styles.scrollView}>
+      <Text style={styles.title}>Ranking</Text>
+        
+      <LeaderboardCell props={null}/>
+      
+      </ScrollView>
+  
+      <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Game')}> 
+            <Text style={styles.buttonText}>Jugar denuevo</Text>
+        </TouchableOpacity>
+  
+        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Setup')}>
+            <Text style={styles.buttonText}>Ir a inicio</Text>
+        </TouchableOpacity>
+      </SafeAreaView>);
+  }
 }
+
 
 
 const styles = StyleSheet.create({
@@ -32,16 +35,23 @@ const styles = StyleSheet.create({
         marginTop: Constants.statusBarHeight
       },
       scrollView: {
-        marginHorizontal: 16,
+        marginTop: 20,
+        backgroundColor: '#FFFFFF',
+        marginBottom: 10
       },
       title: {
-          fontSize: 20
+          fontSize: 20,
+          alignItems: 'center'
       },
       button:{
         alignSelf: 'stretch',
         alignItems: 'center',
-        padding: 20,
+        padding: 16,
         backgroundColor: '#59cbbd',
-        marginTop: 30
+        marginBottom: 30
       }
 });
+
+/* TODO ver como hacer para reiniciar con la misma dificultad */
+
+// TODO: por cada obj de leaderboard, inicializar (el obj tiene que estar igualmente definido que en be)
