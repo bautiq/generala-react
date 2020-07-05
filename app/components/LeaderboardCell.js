@@ -6,12 +6,15 @@ import { render } from 'react-dom';
 export default class LeaderboardCell extends Component {
 
   render() {
-    return(<SafeAreaView style={styles.container}> 
-      <Text style={styles.name}>{"Pepito"}</Text>
+    return(<SafeAreaView> 
+      <View style={styles.container}> 
       <Text style={styles.position}>{"15"}</Text>
+      <Text style={styles.name}>{"Pepito"}</Text>
       <Text style={styles.points}>{"1500"}</Text>
+      </View>
       <View style={styles.divider}/>
-      </SafeAreaView>);
+      </SafeAreaView>
+      );
   }
 
   constructor(props) {
@@ -29,22 +32,24 @@ const styles = StyleSheet.create({
     container: {
         alignSelf: 'stretch',
         flex: 1,
-        marginTop: Constants.statusBarHeight
+        marginTop: Constants.statusBarHeight,
+        flexDirection: 'row'
       },
       name: {
-          fontSize: 10
-          
+          fontSize: 10,
+          alignSelf: 'center'
       },
 
       position: {
         fontSize: 15
       },
 
+      points: {
+        alignSelf: 'right'
+      },
+
       divider:{
         backgroundColor: 'black',
         height: 1
-    },
-    divider:{
-      
     }
 });

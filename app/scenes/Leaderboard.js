@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { StyleSheet, Text, SafeAreaView, ScrollView, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, ScrollView, View, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import LeaderboardCell from '../components/LeaderboardCell';
 
@@ -10,6 +10,7 @@ export default class Leaderboard extends Component {
       
       <ScrollView style={styles.scrollView}>
       <Text style={styles.title}>Ranking</Text>
+    
         
       <LeaderboardCell props={null}/>
       
@@ -49,7 +50,12 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: '#59cbbd',
         marginBottom: 30
-      }
+      },
+
+      divider:{
+        backgroundColor: 'black',
+        height: 1
+    }
 });
 
 /* TODO ver como hacer para reiniciar con la misma dificultad */
