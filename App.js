@@ -3,13 +3,13 @@ import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 
 import Registration from './app/scenes/Registration';
 import Login from './app/scenes/Login';
-import LeaderBoard from './app/scenes/LeaderBoard';
+import Ranking from './app/scenes/Ranking';
 
 
 export default function App() {
    return (
     <View style={styles.container}>
-      <LeaderBoard/>
+      <Ranking/>
      </View>
   );
 }

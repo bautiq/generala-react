@@ -1,7 +1,7 @@
 import React, { useState, Component } from 'react';
 import { StyleSheet, Text, SafeAreaView, ScrollView, View, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
-import LeaderboardCell from '../components/LeaderboardCell';
+import RankingCell from '../components/RankingCell';
 
 export default class Leaderboard extends Component {
 
@@ -12,7 +12,7 @@ export default class Leaderboard extends Component {
       <Text style={styles.title}>Ranking</Text>
     
         
-      <LeaderboardCell props={null}/>
+      <RankingCell props={null}/>
       
       </ScrollView>
   
