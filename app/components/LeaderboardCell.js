@@ -10,11 +10,10 @@ export default class LeaderboardCell extends Component {
       <View style={styles.container}> 
       <Text style={styles.position}>{"15"}</Text>
       <Text style={styles.name}>{"Pepito"}</Text>
-      <Text style={styles.points}>{"1500"}</Text>
+      <Text style={styles.score}>{"1500"}</Text>
       </View>
       <View style={styles.divider}/>
-      </SafeAreaView>
-      );
+      </SafeAreaView>);
   }
 
   constructor(props) {
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
         fontSize: 15
       },
 
-      points: {
+      score: {
         alignSelf: 'right'
       },
 
