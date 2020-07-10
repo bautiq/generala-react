@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 
-import Registration from './app/scenes/Registration';
 import Login from './app/scenes/Login';
 
 
