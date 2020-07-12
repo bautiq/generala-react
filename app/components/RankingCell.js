@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
       },
 
       score: {
-        alignSelf: 'right'
+        alignSelf: 'flex-end'
       },
 
       divider:{
