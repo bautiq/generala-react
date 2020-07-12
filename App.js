@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import Game from './app/scenes/Game';
 import Login from './app/scenes/Login';
 import Register from './app/scenes/Register';
 import { NavigationContainer } from '@react-navigation/native';
