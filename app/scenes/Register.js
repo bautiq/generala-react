@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { Component }from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
 
-export default function Registration() {
+export default class Register extends Component {
+  constructor(props){
+      super(props);
+      
+  }
+  render(){
+
+ 
   return (
     <View style={styles.container}>
         <Text style={styles.header}>Registrate</Text>
@@ -19,7 +26,7 @@ export default function Registration() {
     </View>
   );
 }
-
+}
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'stretch',
