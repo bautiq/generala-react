@@ -3,7 +3,7 @@ import { StyleSheet, Text, SafeAreaView, ScrollView, View, TouchableOpacity } fr
 import Constants from 'expo-constants';
 import RankingCell from '../components/RankingCell';
 
-export default class Leaderboard extends Component {
+export default class Ranking extends Component {
 
   render(){
     return(<SafeAreaView style={styles.container}> 
