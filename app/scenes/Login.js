@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import 'react-native-gesture-handler';
+import React, { Component} from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default function Login() {
+export default class Login extends Component {
+  
+  constructor(props){
+      super(props);
+  }
+  render(){
+ 
   return (
     <View style={styles.container}>
         <Text style={styles.header}>Logeate</Text>
@@ -13,12 +22,12 @@ export default function Login() {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Logearse</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Registrate</Text>
-        </TouchableOpacity>
+        <Button title='Registrate' onPress={() => this.props.navigation.navigate('Register')} />
     </View>
   );
 }
+}
+
 
 const styles = StyleSheet.create({
   container: {
