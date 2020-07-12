@@ -7,7 +7,7 @@ import Constants from './../../Constantes';
 export default class LineaDado extends Component {
     constructor(props) {
         super(props);
-        this.dados = "UDTCFS";
+        this.dados = "12345";
         this.lineDado = this.dados.repeat(1).split("");
         this.state = {
             width: null,
@@ -16,14 +16,13 @@ export default class LineaDado extends Component {
         // this.dadoHeight = this.props.height / Constantes.DADOS;
        
     }
-
     onLayout = (e) => {
         this.setState({
             width: e.width,
             height: e.height,
         })
     }
-
+    
     renderLine = () => {
         let lineaWidth = this.state.width / Constants.DADOS;
         
@@ -31,16 +30,16 @@ export default class LineaDado extends Component {
             <Dado width={lineaWidth} height={this.state.height} />
         )
     }
+
     render() {
         return (
-            <View style={styles.linea} onLayout={this.onLayout}>
+            <View style={styles.linea} >
                 {this.state.width && this.state.height && this.renderLine()}
-                <View>
+                <View style={styles.dados}>
                     {this.lineDado.map((el, idx) => {
-                        return <Dado dado={el} key={idx} index={idx}/>
+                        return <Dado dados={parseInt(Math.random()*6 )+1} key={idx} index={idx}/>
                     })}
                 </View>
-
             </View>
 
         )
@@ -51,7 +50,12 @@ const styles = StyleSheet.create({
     linea: {
         flex: 1,
         backgroundColor: 'green',
-        alignSelf: "center"
-        
+        alignContent: "center",
+        flexDirection: "column",
+        justifyContent: "center",
     },
+    dados: {
+        flexDirection: "row",
+        justifyContent: "center"
+    }
 })
