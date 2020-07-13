@@ -9,42 +9,46 @@ export default class Ranking extends Component {
   state = {
     ranking: []
  }
+constructor(){
+  super()
+  this.rankingReceived = this.rankingReceived.bind(this)
+  
+}
 
  componentDidMount= () => {
-  
-    new RankingService().getRanking( function (response, error){ 
-      this.setState({ranking: response.data}) 
-    })
-  
+    
+    new RankingService().getRanking( (response, error) =>
+    this.rankingReceived(response)
+  )
  }
 
+  rankingReceived = (response) => {
+    if (!!response && response.data){
+      this.setState({ranking: response.data}) 
+    }
+  }
+
+
   render(){
-    
+    let ranking = this.state.ranking.map((item) => {
+      return <RankingCell rankItem={item}/>
+    })
     return(<SafeAreaView style={styles.container}> 
       <Text style={styles.title}>Ranking</Text>
       <ScrollView style={styles.scrollView}>
  
     {
-        this.state.ranking.map((item) => (
-          <RankingCell rankItem={item}/>
-        ))
+        ranking
     }
-     
       </ScrollView>
-  
       <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Game')}> 
             <Text style={styles.buttonText}>Jugar denuevo</Text>
         </TouchableOpacity>
-  
         <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Setup')}>
             <Text style={styles.buttonText}>Ir a inicio</Text>
         </TouchableOpacity>
       </SafeAreaView>);
   }
-}
-
-const RankingReceived = () =>{
-
 }
 
 
@@ -78,7 +82,3 @@ const styles = StyleSheet.create({
         height: 1
     }
 });
-
-/* TODO ver como hacer para reiniciar con la misma dificultad */
-
-// TODO: por cada obj de leaderboard, inicializar (el obj tiene que estar igualmente definido que en be)
