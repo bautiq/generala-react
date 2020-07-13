@@ -62,15 +62,21 @@ export default class Dado extends Component {
     }
     selectDado = () => {
         if (!this.state.selected) {
-            this.setState({selected: true, color: "green"});
+            this.seleccionar();
         }     
         else {
-            this.setState({selected: false, color: "red"});
+            this.deseleccionar();
         }                        
     }
     girarDado() {
         this.newValue = parseInt(Math.random()*6 )+1;
         this.setState({image: this.getDado(this.newValue), value: this.newValue})       
+    }
+    seleccionar() {
+        this.setState({selected: true, color: "green"});
+    }
+    deseleccionar() {
+        this.setState({selected: false, color: "red"});
     }
 
 }

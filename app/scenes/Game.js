@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Checkbox } from 'react-native';
 import Constants from './../../Constantes'
 import LineaDado from '../components/LineaDados';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import Dado from '../components/Dado'
+import { CheckBox } from 'react-native-elements'
 
 
 
@@ -17,55 +18,80 @@ export default class Game extends Component {
             <Dado ref={d2 => this.d2 = d2} dados={parseInt(Math.random()*6 )+1} key={2} index={2}/>,
             <Dado ref={d3 => this.d3 = d3} dados={parseInt(Math.random()*6 )+1} key={3} index={3}/>,
             <Dado ref={d4 => this.d4 = d4} dados={parseInt(Math.random()*6 )+1} key={4} index={4}/>
-        ]        
+        ]
+        this.girosPermitidos = 2;        
         this.state = {
             btnGirarTitle: "Girar",
-            btnTitle: "Finalizar tiro"
-        }
-        this.giros = 2;
+            btnGirarDisabled: false,
+            btnTitle: "Finalizar tiro",
+            juegos: {
+                escalera: false,
+                full: false,
+                poker: false,
+                generala: false
+            },
+            tiros: 4,
+            giros: this.girosPermitidos,
+            puntaje: 0
+        }        
     }
     
     render(){
         return (
             <View style={styles.container}>
-                <View style={styles.header}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Ranking')}><Text>Ranking</Text></TouchableOpacity>
+                <View style={styles.dadosContainer} >
+                    <LineaDado ref={dadosRef => this.dadosRef = dadosRef} dados={this.dados}/>
+                </View>            
+                <Text style={styles.resultado}>Tiros restantes: {this.state.tiros}</Text>
+                <Text style={styles.resultado}>Puntos: {this.state.puntaje}</Text>
+                <CheckBox title='Escalera(20)' checked={this.state.juegos.escalera} disabled="true" />
+                <CheckBox title='Full(30)' checked={this.state.juegos.full} disabled="true" />
+                <CheckBox title='Poker(40)' checked={this.state.juegos.poker} disabled="true" />
+                <CheckBox title='Generala(50)' checked={this.state.juegos.generala} disabled="true" />
+                <Text style={styles.resultado}>{this.state.juego}</Text>
+                <View style={styles.botonContainer}>
+                    <Button title={this.state.btnGirarTitle} disabled={this.state.btnGirarDisabled} onPress={() => this.girar()} />
+                    <Button title={this.state.btnTitle} onPress={() => this.finalizarTiro()} />
                 </View>
-            <View style={styles.dadosContainer} >
-                <LineaDado dados={this.dados}/>
-            </View>
-            <Text style={styles.resultado}>{this.state.juego}</Text>
-            <View style={styles.botonContainer}>
-                <Button title={this.state.btnGirarTitle} onPress={() => this.girar()} />
-                <Button title={this.state.btnTitle} onPress={() => this.finalizarTiro()} />
-            </View>
             </View>
         );
     }
     girar() {        
-        if (this.giros > 0){
+        if (this.state.giros > 0){
             this.all = [this.d0, this.d1, this.d2, this.d3, this.d4];           
             this.all.map((el, idx) => {
                 if (!el.state.selected){
                    el.girarDado();                      
                 }                     
             })            
-            this.giros--;
-            if(this.giros == 1)
+            this.state.giros--;
+            if(this.state.giros == 1)
                 this.setState({btnGirarTitle: "Ultimo giro"}) 
-            else if (this.giros == 0){
-                this.setState({btnGirarTitle: "No tienes mas giros"})
+            else if (this.state.giros == 0){
+                this.setState({btnGirarTitle: "No tienes mas giros", btnGirarDisabled: true})
             }
         }        
     }
-    finalizarTiro() {
+    finalizarTiro() {        
         if (this.state.btnTitle == 'Finalizar tiro'){
-            this.setState({juego: this.calcularJuego(), btnTitle: 'Nuevo tiro'})
-            // pegarle a la api con el resultado
+            this.title = '';
+            if (this.state.tiros == 1) {
+                this.title = 'No tienes más tiros, partida finalizada';
+            }                
+            else
+                this.title = 'Nuevo tiro';     
+            this.setState({juego: this.calcularJuego(), btnTitle: this.title, btnGirarDisabled: true, tiros: this.state.tiros-1});
         }
-        else
-            window.location.reload(false);
-        
+        else if (this.state.tiros > 0)  {
+            this.all.map((el, idx) => {
+                    el.girarDado();   
+                    el.deseleccionar();
+            })
+            this.setState({juego: '', btnTitle: 'Finalizar tiro', btnGirarTitle: "Girar", btnGirarDisabled: false, giros: this.girosPermitidos})
+        }
+        else {
+            // enviar state.puntaje al back. que aparezca boton de nueva partida o boton de ver ranking.
+        }
     }
     calcularJuego() {
         this.juego = '';
@@ -78,23 +104,38 @@ export default class Game extends Component {
             this.element = this.apariciones[this.index];
             if ( this.element == 1) {
                 this.cincoParaEscalera++;
-                if (this.cincoParaEscalera == 5)
+                if (this.cincoParaEscalera == 5) {
                     this.juego = 'escalera';
+                    this.state.juegos.escalera = true;
+                    this.state.puntaje = this.state.puntaje + 20;
+                }                    
             }                
             else if (this.element == 2) {
                 this.dosDelFull = true;
-                if (this.tresDelFull)
+                if (this.tresDelFull){
                     this.juego = 'full';
+                    this.state.juegos.full = true;
+                    this.state.puntaje = this.state.puntaje + 30;
+                }                    
             }                
             else if (this.element == 3) {
                 this.tresDelFull = true;
-                if (this.dosDelFull)
+                if (this.dosDelFull) {
                     this.juego = 'full';
+                    this.state.juegos.full = true;
+                    this.state.puntaje = this.state.puntaje + 30;
+                }                    
             }                
-            else if (this.element == 4)
+            else if (this.element == 4) {
                 this.juego = 'poker';
-            else if (this.element == 5)
+                this.state.juegos.poker = true;
+                this.state.puntaje = this.state.puntaje + 40;
+            }                
+            else if (this.element == 5) {
                 this.juego = 'generala';
+                this.state.juegos.generala = true;
+                this.state.puntaje = this.state.puntaje + 50;
+            }                
             if (this.index == this.apariciones.length)
                 this.juego ='nada';
             else
@@ -111,7 +152,7 @@ export default class Game extends Component {
             }                                
         });
         return this.result;
-    }    
+    }
 }
 
  const styles = StyleSheet.create({
@@ -132,14 +173,14 @@ export default class Game extends Component {
     dadosContainer: {
         // height: 60,
         flex: 4,
-        height: Constants.MAX_HEIGHT-60,
+        //height: Constants.MAX_HEIGHT-60,
         width: Constants.MAX_WIDTH,
         backgroundColor: 'green',
         justifyContent: "center",
     },
     botonContainer: {
         flex: 1,
-        height: Constants.MAX_HEIGHT,
+        //height: Constants.MAX_HEIGHT,
         width: Constants.MAX_WIDTH,
         backgroundColor: 'blue',
        
