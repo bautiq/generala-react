@@ -12,11 +12,9 @@ export default class Ranking extends Component {
 constructor(){
   super()
   this.rankingReceived = this.rankingReceived.bind(this)
-  
 }
 
  componentDidMount= () => {
-    
     new RankingService().getRanking( (response, error) =>
     this.rankingReceived(response)
   )
@@ -44,7 +42,7 @@ constructor(){
       <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Game')}> 
             <Text style={styles.buttonText}>Jugar denuevo</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Setup')}>
+        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Dificultad')}>
             <Text style={styles.buttonText}>Ir a inicio</Text>
         </TouchableOpacity>
       </SafeAreaView>);
