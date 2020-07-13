@@ -3,17 +3,17 @@ import { StyleSheet, Text, SafeAreaView, View, requireNativeComponent } from 're
 import Constants from 'expo-constants';
 import { render } from 'react-dom';
 
-export default class LeaderboardCell extends Component {
+export default class RankingCell extends Component {
 
   render() {
-    return(<SafeAreaView> 
+    return(<View> 
       <View style={styles.container}> 
-      <Text style={styles.position}>{"15"}</Text>
-      <Text style={styles.name}>{"Pepito"}</Text>
-      <Text style={styles.score}>{"1500"}</Text>
+      <Text style={styles.position}>{this.props.rankItem.posicion}</Text>
+      <Text style={styles.name}>{this.props.rankItem.usuario}</Text>
+      <Text style={styles.score}>{this.props.rankItem.score}</Text>
       </View>
       <View style={styles.divider}/>
-      </SafeAreaView>);
+      </View>);
   }
 
   constructor(props) {
@@ -29,22 +29,28 @@ export default class LeaderboardCell extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        alignSelf: 'stretch',
         flex: 1,
         marginTop: Constants.statusBarHeight,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'stretch',
+    
       },
       name: {
-          fontSize: 10,
-          alignSelf: 'center'
+          fontSize: 20,
+          alignSelf: 'center',
+          margin: 10
       },
 
       position: {
-        fontSize: 15
+        fontSize: 20,
+        alignSelf: 'flex-start',
+        margin: 10
       },
 
       score: {
-        alignSelf: 'flex-end'
+        fontSize: 20,
+        alignSelf: 'flex-end',
+        margin: 10
       },
 
       divider:{

@@ -2,18 +2,34 @@ import React, { useState, Component } from 'react';
 import { StyleSheet, Text, SafeAreaView, ScrollView, View, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import RankingCell from '../components/RankingCell';
+import RankingService from '../services/RankingService';
 
 export default class Ranking extends Component {
 
+  state = {
+    ranking: []
+ }
+
+ componentDidMount= () => {
+  
+    new RankingService().getRanking( function (response, error){ 
+      this.setState({ranking: response.data}) 
+    })
+  
+ }
+
   render(){
-    return(<SafeAreaView style={styles.container}> 
-      
-      <ScrollView style={styles.scrollView}>
-      <Text style={styles.title}>Ranking</Text>
     
-        
-      <RankingCell props={null}/>
-      
+    return(<SafeAreaView style={styles.container}> 
+      <Text style={styles.title}>Ranking</Text>
+      <ScrollView style={styles.scrollView}>
+ 
+    {
+        this.state.ranking.map((item) => (
+          <RankingCell rankItem={item}/>
+        ))
+    }
+     
       </ScrollView>
   
       <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Game')}> 
@@ -27,6 +43,9 @@ export default class Ranking extends Component {
   }
 }
 
+const RankingReceived = () =>{
+
+}
 
 
 const styles = StyleSheet.create({
@@ -41,10 +60,12 @@ const styles = StyleSheet.create({
         marginBottom: 10
       },
       title: {
+        margin: 10,
           fontSize: 20,
-          alignItems: 'center'
+          alignSelf: 'center'
       },
       button:{
+        marginHorizontal: 16,
         alignSelf: 'stretch',
         alignItems: 'center',
         padding: 16,
