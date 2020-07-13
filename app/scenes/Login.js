@@ -1,27 +1,51 @@
 import 'react-native-gesture-handler';
 import React, { Component} from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import UserService from './app/services/UserService';
+
 
 export default class Login extends Component {
   
   constructor(props){
       super(props);
+      this.handleChange= this.handleChange.bind(this);
   }
+
+  handleChange(event = {}) {
+    const name = event.target && event.target.name;
+    const value = event.target && event.target.value;
+  
+    this.setState([name] : value);
+  }
+
   render(){
  
   return (
     <View style={styles.container}>
         <Text style={styles.header}>Logeate</Text>
         <TextInput style={styles.textinput} placeholder="Ingresa tu email"
-        underlineColor={'transparent'} />
+        underlineColor={'transparent'} name="email"
+        onChangeText={this.handleChange}
+        value={this.state.email} />
         <TextInput style={styles.textinput} placeholder="Ingresa tu contraseña"
-        underlineColor={'transparent'} />
+        underlineColor={'transparent'} name="pass"
+        onChangeText={this.handleChange}
+        value={this.state.pass}/>
         
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Logearse</Text>
+          <Button title='Login'  onPress={() =>
+          new UserService().login( function (response, error){
+            if (!!response && !!response.data.usuario) {
+              // TODO: mandar al inicio de juego y pasarle el usuario
+              //this.props.navigation.navigate('Register')
+            } else if (!!error){
+              //TODO: ver de mostrar error.message
+            } else {
+              this.props.navigation.navigate('Register')
+            }
+          },{"pass": this.state.pass, "email": this.state.email})}/>
         </TouchableOpacity>
+        
         <Button title='Registrate' onPress={() => this.props.navigation.navigate('Register')} />
     </View>
   );
