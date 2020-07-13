@@ -13,9 +13,7 @@ export default class LineaDado extends Component {
             width: null,
             height: null
         }
-        this.dados = [<Dado dados={parseInt(Math.random()*6 )+1} key={0} index={0}/>, <Dado dados={parseInt(Math.random()*6 )+1} key={1} index={1}/>,
-        <Dado dados={parseInt(Math.random()*6 )+1} key={2} index={2}/>, <Dado dados={parseInt(Math.random()*6 )+1} key={3} index={3}/>,
-        <Dado dados={parseInt(Math.random()*6 )+1} key={4} index={4}/> ]            
+        this.dados = this.props.dados;          
         // this.dadoHeight = this.props.height / Constantes.DADOS;
        
     }
@@ -46,7 +44,7 @@ export default class LineaDado extends Component {
             </View>
 
         )
-    }   
+    }
 
 }
 const styles = StyleSheet.create({

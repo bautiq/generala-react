@@ -69,7 +69,8 @@ export default class Dado extends Component {
         }                        
     }
     girarDado() {
-        this.setState({image: this.getDado(parseInt(Math.random()*6 )+1)})        
+        this.newValue = parseInt(Math.random()*6 )+1;
+        this.setState({image: this.getDado(this.newValue), value: this.newValue})       
     }
 
 }
