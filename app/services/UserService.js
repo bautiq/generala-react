@@ -1,3 +1,9 @@
 const baseService = require('./BaseService');
 
-//baseService.baseUrl
+
+export default class UserService {
+
+    updateUserScore(callback, userId, puntaje) {
+        baseService.put(callback, "usuarios/updateScore/", ":" + userId, {score: puntaje});
+    };
+}

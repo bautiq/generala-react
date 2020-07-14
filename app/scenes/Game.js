@@ -5,6 +5,7 @@ import LineaDado from '../components/LineaDados';
 import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import Dado from '../components/Dado'
 import { CheckBox } from 'react-native-elements'
+import UserService from '../services/UserService';
 
 
 
@@ -90,7 +91,8 @@ export default class Game extends Component {
             this.setState({juego: '', btnTitle: 'Finalizar tiro', btnGirarTitle: "Girar", btnGirarDisabled: false, giros: this.girosPermitidos})
         }
         else {
-            this.props.navigation.navigate('Ranking');
+            this.updateUserScore();
+            this.props.navigation.navigate('Ranking');            
         }
     }
     calcularJuego() {
@@ -152,6 +154,11 @@ export default class Game extends Component {
             }                                
         });
         return this.result;
+    }
+    updateUserScore = () => {
+        new UserService().updateUserScore( (response, error) =>
+            console.log(response), this.userId, this.state.puntaje
+        )
     }
 }
 
