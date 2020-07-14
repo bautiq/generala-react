@@ -47,7 +47,7 @@ export default class Dificultad extends Component {
         <TouchableOpacity style={styles.button} onPress={ () => this.state.dificultad = "dificil"}>
           <Text style={styles.buttonText}>Dificil</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => this.aceptarDificultad() , () => this.props.navigation.navigate('Game')}>
+        <TouchableOpacity style={styles.button} onPress={() => this.aceptarDificultad()}>
           <Text style={styles.buttonText}>Aceptar</Text>
         </TouchableOpacity>
       </View>
