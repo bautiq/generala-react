@@ -5,6 +5,7 @@ import Constants from '../../Constantes';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import DificultadService from '../services/DificultadService';
+import Game from './Game';
 /*
 Example use in view:
 import RankingService from './app/services/RankingService';
@@ -25,13 +26,7 @@ export default class Dificultad extends Component {
   }
 
   aceptarDificultad(){
-    new DificultadService().postDificultad(function (response, error) {
-      console.log(response);
-      if(response){
-      // this.props.navigation.navigate('Game');
-      }
-      // () => , 
-    }, this.state.dificultad)
+    this.props.navigation.navigate('Game', {dificultad : this.state.dificultad })
   }
 
   render() {
