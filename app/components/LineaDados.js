@@ -7,12 +7,13 @@ import Constants from './../../Constantes';
 export default class LineaDado extends Component {
     constructor(props) {
         super(props);
-        this.dados = "12345";
-        this.lineDado = this.dados.repeat(1).split("");
+        this.num = "12345";
+        this.lineDado = this.num.repeat(1).split("");
         this.state = {
             width: null,
             height: null
         }
+        this.dados = this.props.dados;          
         // this.dadoHeight = this.props.height / Constantes.DADOS;
        
     }
@@ -36,9 +37,9 @@ export default class LineaDado extends Component {
             <View style={styles.linea} >
                 {this.state.width && this.state.height && this.renderLine()}
                 <View style={styles.dados}>
-                    {this.lineDado.map((el, idx) => {
-                        return <Dado dados={parseInt(Math.random()*6 )+1} key={idx} index={idx}/>
-                    })}
+                    {this.dados.map((el, idx) => {
+                        return el;
+                    })}                    
                 </View>
             </View>
 
@@ -49,7 +50,7 @@ export default class LineaDado extends Component {
 const styles = StyleSheet.create({
     linea: {
         flex: 1,
-        backgroundColor: 'green',
+        backgroundColor: 'white',
         alignContent: "center",
         flexDirection: "column",
         justifyContent: "center",
