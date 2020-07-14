@@ -17,21 +17,21 @@ function generateUrl(path, params) {
 
 export function get(callback, path, params, body) {
     const url = generateUrl(path, params);
-    axios.get(url, body)
+    axios({method: 'get', url: url, headers: {}, data: body})
             .then( function(r) { callback(r, undefined) })
             .catch(function(error) { callback(undefined, error) });
 }
 
 export function post(callback, path, params, body) {
     const url = generateUrl(path, params);
-    axios.post(url, body)
+    axios({method: 'post', url: url, headers: {}, data: body})
             .then( function(r) { callback(r, undefined) })
             .catch(function(error) { callback(undefined, error) });
 }
 
 export function put(callback, path, params, body) {
     const url = generateUrl(path, params);
-    axios.put(url, body)
+    axios({method: 'put', url: url, headers: {}, data: body})
             .then( function(r) { callback(r, undefined) })
             .catch(function(error) { callback(undefined, error) });
 }

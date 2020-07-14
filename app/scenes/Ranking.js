@@ -39,11 +39,8 @@ constructor(){
         ranking
     }
       </ScrollView>
-      <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Game')}> 
+      <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Dificultad')}> 
             <Text style={styles.buttonText}>Jugar denuevo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Dificultad')}>
-            <Text style={styles.buttonText}>Ir a inicio</Text>
         </TouchableOpacity>
       </SafeAreaView>);
   }
