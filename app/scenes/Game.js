@@ -76,7 +76,7 @@ export default class Game extends Component {
         if (this.state.btnTitle == 'Finalizar tiro'){
             this.title = '';
             if (this.state.tiros == 1) {
-                this.title = 'No tienes más tiros, partida finalizada';
+                this.title = 'No tienes más tiros, mira el ranking';
             }                
             else
                 this.title = 'Nuevo tiro';     
@@ -90,7 +90,7 @@ export default class Game extends Component {
             this.setState({juego: '', btnTitle: 'Finalizar tiro', btnGirarTitle: "Girar", btnGirarDisabled: false, giros: this.girosPermitidos})
         }
         else {
-            // enviar state.puntaje al back. que aparezca boton de nueva partida o boton de ver ranking.
+            this.props.navigation.navigate('Ranking');
         }
     }
     calcularJuego() {
