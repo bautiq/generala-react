@@ -13,22 +13,24 @@ export default class Login extends Component {
         pass : '',
         email : ''
       }
-      this.performLogin= this.performLogin.bind(this);
+      this.userService = new UserService();
+      this.performLogin = this.performLogin.bind(this);
   }
 
   performLogin = () => {
-    new UserService().login( function (response, error){
+    this.userService.login( function (response, error){
       console.log(error)
       console.log(response)
-      if (!!response && !!response.data.user_id) {
-        console.log(response)
-        // TODO: mandar al inicio de juego y pasarle el usuario
-        this.props.navigation.navigate('Dificultad')
+      if (!!response && !!response.data.usuario) {
+        
+         this.props.navigation.navigate('Dificultad')
+        // TODO: guardar en local storage el user
+        
       } else if (!!error){
         console.log(error)
-        //TODO: ver de mostrar error.message
+        //TODO: ver de mostrar error
       }
-    },{"pass": this.state.pass, "email": this.state.email})
+    }.bind(this) ,{"pass": this.state.pass, "mail": this.state.email})
   }
 
   render(){

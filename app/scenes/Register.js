@@ -1,6 +1,7 @@
 import React, { Component }from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
 import Constants from '../../Constantes';
+import UserService from '../services/UserService';
 
 export default class Register extends Component {
 
@@ -11,11 +12,24 @@ export default class Register extends Component {
       email : '',
       nombre: ''
     }
-    this.performRegister= this.performRegister.bind(this);
+    this.performRegister = this.performRegister.bind(this);
+    this.userService = new UserService();
 }
 
 performRegister = () => {
-
+  this.userService.register(function (response, error){
+    console.log(error)
+    console.log(response)
+    if (!!response && !!response.data.usuario) {
+      
+       this.props.navigation.navigate('Dificultad')
+      // TODO: guardar en local storage el user
+      
+    } else if (!!error){
+      console.log(error)
+      //TODO: ver de mostrar error
+    }
+  }.bind(this) ,{"pass": this.state.pass, "mail": this.state.email, "nombre": this.state.nombre})
 
 }
 
