@@ -8,16 +8,27 @@ export default class Login extends Component {
   
   constructor(props){
       super(props);
-      this.handleChange= this.handleChange.bind(this);
 
+      this.state ={
+        pass : '',
+        email : ''
+      }
+      this.performLogin= this.performLogin.bind(this);
   }
 
-
-  handleChange(event = {}) {
-    const name = event.target && event.target.name;
-    const value = event.target && event.target.value;
-  
-    this.setState({[name] : value});
+  performLogin = () => {
+    new UserService().login( function (response, error){
+      console.log(error)
+      console.log(response)
+      if (!!response && !!response.data.user_id) {
+        console.log(response)
+        // TODO: mandar al inicio de juego y pasarle el usuario
+        this.props.navigation.navigate('Dificultad')
+      } else if (!!error){
+        console.log(error)
+        //TODO: ver de mostrar error.message
+      }
+    },{"pass": this.state.pass, "email": this.state.email})
   }
 
   render(){
@@ -26,24 +37,17 @@ export default class Login extends Component {
     <View style={styles.container}>
         <Text style={styles.header}>Inicie sesion para jugar</Text>
         <TextInput style={styles.textinput} placeholder="Ingresa tu email"
-        underlineColor={'transparent'} name="email"
-        onChangeText={this.handleChange}
-        /*value={this.state.email}*/ placeholderTextColor = "white" />
+        underlineColor={'transparent'}
+        onChangeText={(text) => this.state.email = text}
+        placeholderTextColor = "white" />
         <TextInput style={styles.textinput} placeholder = "Ingresa tu contraseña"
-        underlineColor={'transparent'} name="pass"
-        onChangeText={this.handleChange}
-        /*value={this.state.pass}*/ placeholderTextColor = "white"/>
+        underlineColor={'transparent'}
+        onChangeText = {(text) => this.state.pass = text}
+         placeholderTextColor = "white"/>
         
-        <TouchableOpacity style={styles.button}>
-          <Button title='Login'  onPress={() =>
-          new UserService().login( function (response, error){
-            if (!!response && !!response.data.id) {
-              // TODO: mandar al inicio de juego y pasarle el usuario
-              this.props.navigation.navigate('Dificultad')
-            } else if (!!error){
-              //TODO: ver de mostrar error.message
-            }
-          },{"pass": this.state.pass, "email": this.state.email})}/>
+        <TouchableOpacity style={styles.button} onPress={
+          this.performLogin}>
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Register')}>

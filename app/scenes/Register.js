@@ -3,25 +3,33 @@ import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity 
 import Constants from '../../Constantes';
 
 export default class Register extends Component {
-  constructor(props){
-      super(props);
-      
-  }
-  render(){
 
- 
+  constructor(props) {
+    super(props);
+    this.state ={
+      pass : '',
+      email : '',
+      nombre: ''
+    }
+    this.performRegister= this.performRegister.bind(this);
+}
+
+performRegister = () => {
+
+
+}
+
+  render(){ 
   return (
     <View style={styles.container}>
         <Text style={styles.header}>Registrate</Text>
         <TextInput style={styles.textinput} placeholder="Ingresa tu nombre"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
-        <TextInput style={styles.textinput} placeholder="Ingresa tu edad"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
+        underlineColor={'transparent'} placeholderTextColor= "white" onChangeText={(text) => this.state.nombre = text} />
         <TextInput style={styles.textinput} placeholder="Ingresa tu email"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
+        underlineColor={'transparent'} placeholderTextColor= "white" onChangeText={(text) => this.state.email = text} />
         <TextInput style={styles.textinput} placeholder="Ingresa tu contraseña"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
-        <TouchableOpacity style={styles.button}>
+        underlineColor={'transparent'} placeholderTextColor= "white" onChangeText={(text) => this.state.pass = text} />
+        <TouchableOpacity style={styles.button} onPress = { this.performRegister}>
           <Text style={styles.buttonText}>Registrar</Text>
         </TouchableOpacity>
     </View>
