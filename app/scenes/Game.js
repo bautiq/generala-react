@@ -32,9 +32,12 @@ export default class Game extends Component {
                 generala: false
             },
             tiros: 4,
+            // TODO: tiros: this.props.tiros,
             giros: this.girosPermitidos,
             puntaje: 0
-        }        
+        }
+        this.userId = 1;
+        // TODO: this.userId = this.props.userId;   
     }
     
     render(){
@@ -90,7 +93,8 @@ export default class Game extends Component {
             })
             this.setState({juego: '', btnTitle: 'Finalizar tiro', btnGirarTitle: "Girar", btnGirarDisabled: false, giros: this.girosPermitidos})
         }
-        else {
+        else {        
+            //TODO: que espere a que el update finalice para redirigir a la pantalla de Ranking.
             this.updateUserScore();
             this.props.navigation.navigate('Ranking');            
         }
