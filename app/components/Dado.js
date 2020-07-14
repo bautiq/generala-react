@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlightBase } from 'react-native';
 import DadoImg from '../../assets/dados.js'
 import Constantes from '../../Constantes.js';
 import Axios from 'axios';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-export default class Dado extends Component {
+export default class Dado extends Component {    
     constructor(props) {
         super(props)
         this.state={
-            data:[]
+            id: this.props.index,
+            selected: false,
+            color: "red",
+            value: this.props.dados,
+            image: this.getDado(this.props.dados)
         }
     }
     traerDados() {
@@ -21,9 +26,9 @@ export default class Dado extends Component {
         console.log(resp.data);
         this.setState({ data: resp.data.movies });
     }
-    getDado = () => {
+    getDado = (value) => {
         
-        switch (this.props.dados) {
+        switch (value) {
             case 1:
                 return DadoImg.uno;
                 break;
@@ -47,15 +52,31 @@ export default class Dado extends Component {
         }
     }
     render() {
-        let dadito = this.getDado();
         return (
             <View style={styles.dados}>
-                {this.state.data.map((item) =>
-                console.log("caca"))}
-                <Image style={{ width: 60, height: 60 }} resizeMode="contain" source={dadito} />
+                <TouchableOpacity onPress={() => this.selectDado()}>
+                    <Image style={{ width: 60, height: 60, backgroundColor: this.state.color }} resizeMode="contain" source={this.state.image} />
+                </TouchableOpacity>                
             </View>
-
         )
+    }
+    selectDado = () => {
+        if (!this.state.selected) {
+            this.seleccionar();
+        }     
+        else {
+            this.deseleccionar();
+        }                        
+    }
+    girarDado() {
+        this.newValue = parseInt(Math.random()*6 )+1;
+        this.setState({image: this.getDado(this.newValue), value: this.newValue})       
+    }
+    seleccionar() {
+        this.setState({selected: true, color: "green"});
+    }
+    deseleccionar() {
+        this.setState({selected: false, color: "red"});
     }
 
 }
