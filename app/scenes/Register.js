@@ -1,5 +1,6 @@
 import React, { Component }from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
+import Constants from '../../Constantes';
 
 export default class Register extends Component {
   constructor(props){
@@ -13,13 +14,13 @@ export default class Register extends Component {
     <View style={styles.container}>
         <Text style={styles.header}>Registrate</Text>
         <TextInput style={styles.textinput} placeholder="Ingresa tu nombre"
-        underlineColor={'transparent'} />
+        underlineColor={'transparent'} placeholderTextColor= "white" />
         <TextInput style={styles.textinput} placeholder="Ingresa tu edad"
-        underlineColor={'transparent'} />
+        underlineColor={'transparent'} placeholderTextColor= "white" />
         <TextInput style={styles.textinput} placeholder="Ingresa tu email"
-        underlineColor={'transparent'} />
+        underlineColor={'transparent'} placeholderTextColor= "white" />
         <TextInput style={styles.textinput} placeholder="Ingresa tu contraseña"
-        underlineColor={'transparent'} />
+        underlineColor={'transparent'} placeholderTextColor= "white" />
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Registrar</Text>
         </TouchableOpacity>
@@ -29,14 +30,17 @@ export default class Register extends Component {
 }
 const styles = StyleSheet.create({
   container: {
-    alignSelf: 'stretch',
-
+    backgroundColor: "black",
+    width: Constants.MAX_WIDTH,
+    height: Constants.MAX_HEIGHT,
+    justifyContent: "center",
   },
   header:{
     fontSize: 24,
     color: '#fff',
     paddingBottom: 10,
     marginBottom: 40,
+    paddingLeft: 20,
     borderBottomColor: "#199187",
     borderBottomWidth: 1,
   },
@@ -44,6 +48,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     height: 40,
     marginBottom: 30,
+    paddingLeft: 20,
     color: '#fff',
     borderBottomColor: '#f8f8f8',
     borderBottomWidth: 1
