@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Game from './app/scenes/Game';
 import Ranking from './app/scenes/Ranking';
+import Dificultad from './app/scenes/Dificultad';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Login" screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Dificultad" component={Dificultad} />
         <Stack.Screen name="Game" component={Game} />
         <Stack.Screen name="Ranking" component={Ranking} />
       </Stack.Navigator>
