@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { Component} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, TextInput, Touchable, TouchableOpacity } from 'react-native';
 import UserService from '../services/UserService';
 import Constants from '../../Constantes';
 
@@ -11,16 +11,20 @@ export default class Login extends Component {
 
       this.state ={
         pass : '',
-        email : ''
+        email : '',
+        fetching: false
       }
       this.userService = new UserService();
       this.performLogin = this.performLogin.bind(this);
   }
 
   performLogin = () => {
+    
+    this.setState({'fetching': true});
+    
     this.userService.login( function (response, error){
-      console.log(error)
-      console.log(response)
+      
+      this.setState({'fetching': false});
       if (!!response && !!response.data.usuario) {
         
          this.props.navigation.navigate('Dificultad')
@@ -37,6 +41,7 @@ export default class Login extends Component {
    
   return (
     <View style={styles.container}>
+       <ActivityIndicator size="large" style={styles.spinner} animating={this.state.fetching}/>
         <Text style={styles.header}>Inicie sesion para jugar</Text>
         <TextInput style={styles.textinput} placeholder="Ingresa tu email"
         underlineColor={'transparent'}
@@ -97,6 +102,11 @@ const styles = StyleSheet.create({
   buttonText:{
     color: '#fff',
     fontWeight: 'bold'
-  }
+  },
+  spinner:{
+    flex: 1,
+    alignSelf: 'center',
+    position: 'absolute'
+}
 
 });
