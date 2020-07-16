@@ -9,7 +9,7 @@ const AuthAlert = {
         if (Platform.OS === 'web') {
           alert(errorMessage)
        } else {
-           Alert.alert("Error", errorMessage, { text: "OK"})
+           Alert.alert("Error", errorMessage,[{ text: "OK"}], { cancelable: false } )
        }
     }
 }
