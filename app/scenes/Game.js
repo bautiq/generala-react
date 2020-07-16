@@ -102,9 +102,6 @@ export default class Game extends Component {
     abrirRanking() {
         //TODO: que espere a que el update finalice para redirigir a la pantalla de Ranking, reemplazando el timeout.
         this.updateUserScore();
-        setTimeout(() => {
-            this.props.navigation.navigate('Ranking');
-        }, 3000); 
     }
     calcularJuego() {
         this.juego = '';
@@ -176,9 +173,14 @@ export default class Game extends Component {
         });
         return this.result;
     }
-    updateUserScore() {        
-        new UserService().updateUserScore( (response, error) =>
-            console.log(response), this.userId, this.state.puntaje
+    updateUserScore = () => {        
+        new UserService().updateUserScore( function (response, error) {
+            if(!!response)
+                this.props.navigation.navigate('Ranking');
+            else if (!!error)
+                AuthAlert.showAlert(error);    
+        }.bind(this)
+        , this.userId, this.state.puntaje
         )
     }
 }
