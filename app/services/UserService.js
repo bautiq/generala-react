@@ -9,4 +9,8 @@ export default class UserService {
     register(callback, body) {
         baseService.post(callback, "register/", undefined, body)
     }
+
+    updateUserScore(callback, userId, puntaje) {
+        baseService.put(callback, "usuarios/updateScore/", userId, {score: puntaje});
+    };
 }
