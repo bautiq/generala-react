@@ -1,9 +1,11 @@
 import 'react-native-gesture-handler';
 import React, { Component} from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, TextInput, Touchable, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, TextInput, Alert, TouchableOpacity } from 'react-native';
 import UserService from '../services/UserService';
-import deviceStorage from '../services/DeviceStorage';
-
+import deviceStorage from '../core/DeviceStorage';
+import { emailValidator, passwordValidator } from '../core/DataInputValidator';
+import AuthAlert from '../components/AuthAlert';
+import HeaderText from '../components/HeaderText';
 import Constants from '../../Constantes';
 
 export default class Login extends Component {
@@ -14,12 +16,28 @@ export default class Login extends Component {
       this.state ={
         pass : '',
         email : '',
+        emailError: '',
+        passError: '',
         fetching: false
       }
       this.userService = new UserService();
       this.performLogin = this.performLogin.bind(this);
       this.checkIfLogged = this.checkIfLogged.bind(this);
+      this.validateEmail = this.validateEmail.bind(this);
+      this.validatePassword = this.validatePassword.bind(this);
+
   }
+
+  validateEmail = (email) => {
+    this.setState({emailError: emailValidator(email)})
+    this.setState({email: email})
+  }
+
+  validatePassword = (pass) => {
+    this.setState({passError: passwordValidator(pass)})
+    this.setState({pass: pass})
+  }
+
 
   checkIfLogged = () => {
     deviceStorage.loadUser(function(error, user){
@@ -30,7 +48,6 @@ export default class Login extends Component {
   }
 
   performLogin = () => {
-    
     this.setState({'fetching': true});
     
     this.userService.login( function (response, error){
@@ -42,8 +59,8 @@ export default class Login extends Component {
          deviceStorage.saveUser(response.data.usuario);
         
       } else if (!!error){
-        console.log(error);
-        //TODO: ver de mostrar error
+        AuthAlert.showAlert(error);
+     
       }
     }.bind(this) ,{"pass": this.state.pass, "mail": this.state.email})
   }
@@ -53,23 +70,26 @@ export default class Login extends Component {
   return (
     <View style={styles.container}>
        <ActivityIndicator size="large" style={styles.spinner} animating={this.state.fetching}/>
-        <Text style={styles.header}>Inicie sesion para jugar</Text>
-        <TextInput style={styles.textinput} placeholder="Ingresa tu email"
+        <HeaderText text= "Inicie Sesion Para jugar"/>
+        <TextInput style={[styles.textinput, this.state.emailError ? styles.invalid : null]} placeholder="Ingresa tu email"
         underlineColor={'transparent'}
-        onChangeText={(text) => this.state.email = text}
-        placeholderTextColor = "white" />
-        <TextInput style={styles.textinput} placeholder = "Ingresa tu contraseña"
-        underlineColor={'transparent'}
-        onChangeText = {(text) => this.state.pass = text}
-         placeholderTextColor = "white" secureTextEntry/>
+        onChangeText={(text) => this.validateEmail(text)}
+        placeholderTextColor = "white" autoCapitalize="none"
+        autoCompleteType="email"
+        textContentType="emailAddress"/>
         
-        <TouchableOpacity style={styles.button} disabled={this.state.fetching} onPress={
+        <TextInput style={[styles.textinput , this.state.passError ? styles.invalid : null]} placeholder = "Ingresa tu contraseña"
+        underlineColor={'transparent'}
+        onChangeText = {(text) => this.validatePassword(text)}
+         placeholderTextColor = "white" secureTextEntry autoCapitalize="none"/>
+        
+        <TouchableOpacity style={styles.button} disabled={this.state.fetching || !this.state.email || !this.state.pass} onPress={
           () => this.performLogin()}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} disabled={this.state.fetching} onPress={() => this.props.navigation.navigate('Register')}>
-          <Text style={styles.buttonText}>Registrate</Text>
+          <Text style={styles.buttonText}>No tengo cuenta</Text>
         </TouchableOpacity>
     </View>
   );
@@ -84,15 +104,6 @@ const styles = StyleSheet.create({
     width: Constants.MAX_WIDTH,
     height: Constants.MAX_HEIGHT,
     justifyContent: "center",
-  },
-  header:{
-    fontSize: 24,
-    color: '#fff',
-    paddingBottom: 10,
-    paddingLeft: 20,
-    marginBottom: 40,
-    borderBottomColor: "#199187",
-    borderBottomWidth: 1,
   },
   textinput:{
     alignSelf: 'stretch',
@@ -118,6 +129,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     position: 'absolute'
-}
+},
+invalid: {
+  borderBottomColor: 'red',
+  borderBottomWidth: 1
+},
 
 });
