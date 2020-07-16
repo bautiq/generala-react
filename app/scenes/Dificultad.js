@@ -19,31 +19,40 @@ export default class Dificultad extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      dificultad: "",
-    };
-
   }
 
-  aceptarDificultad(){
-    this.props.navigation.navigate('Game', {dificultad : this.state.dificultad })
+  aceptarDificultad(value){
+    this.props.navigation.navigate('Game', {tiros : this.tirosDificultad(value) });
+  }
+
+  tirosDificultad(value) {
+    let tiros = 0;
+    switch (value) {
+      case "facil":
+        tiros = 6;
+        break;
+      case "medio":
+        tiros = 5;
+        break;
+      case "dificil":
+        tiros = 4;
+        break;    
+    }
+    return tiros;
   }
 
   render() {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.button} onPress={() => this.state.dificultad = "facil"} >
+        <TouchableOpacity style={styles.button} onPress={() => this.aceptarDificultad("facil")} >
           <Text style={styles.buttonText}>Facil</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => this.state.dificultad = "medio"}>
+        <TouchableOpacity style={styles.button} onPress={() => this.aceptarDificultad("medio")}>
           <Text style={styles.buttonText}>Intermedio</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={ () => this.state.dificultad = "dificil"}>
+        <TouchableOpacity style={styles.button} onPress={() => this.aceptarDificultad("dificil")}>
           <Text style={styles.buttonText}>Dificil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => this.aceptarDificultad()}>
-          <Text style={styles.buttonText}>Aceptar</Text>
         </TouchableOpacity>
       </View>
     );
