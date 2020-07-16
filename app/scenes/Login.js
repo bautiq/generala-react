@@ -2,6 +2,8 @@ import 'react-native-gesture-handler';
 import React, { Component} from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, TextInput, Touchable, TouchableOpacity } from 'react-native';
 import UserService from '../services/UserService';
+import deviceStorage from '../services/DeviceStorage';
+
 import Constants from '../../Constantes';
 
 export default class Login extends Component {
@@ -16,6 +18,15 @@ export default class Login extends Component {
       }
       this.userService = new UserService();
       this.performLogin = this.performLogin.bind(this);
+      this.checkIfLogged = this.checkIfLogged.bind(this);
+  }
+
+  checkIfLogged = () => {
+    deviceStorage.loadUser(function(error, user){
+      if(!!user){
+        this.props.navigation.navigate('Dificultad')
+      }
+    }.bind(this))
   }
 
   performLogin = () => {
@@ -27,18 +38,18 @@ export default class Login extends Component {
       this.setState({'fetching': false});
       if (!!response && !!response.data.usuario) {
         
-         this.props.navigation.navigate('Dificultad')
-        // TODO: guardar en local storage el user
+         this.props.navigation.navigate('Dificultad');
+         deviceStorage.saveUser(response.data.usuario);
         
       } else if (!!error){
-        console.log(error)
+        console.log(error);
         //TODO: ver de mostrar error
       }
     }.bind(this) ,{"pass": this.state.pass, "mail": this.state.email})
   }
 
   render(){
-   
+   this.checkIfLogged()
   return (
     <View style={styles.container}>
        <ActivityIndicator size="large" style={styles.spinner} animating={this.state.fetching}/>
@@ -50,14 +61,14 @@ export default class Login extends Component {
         <TextInput style={styles.textinput} placeholder = "Ingresa tu contraseña"
         underlineColor={'transparent'}
         onChangeText = {(text) => this.state.pass = text}
-         placeholderTextColor = "white"/>
+         placeholderTextColor = "white" secureTextEntry/>
         
-        <TouchableOpacity style={styles.button} onPress={
-          this.performLogin}>
+        <TouchableOpacity style={styles.button} disabled={this.state.fetching} onPress={
+          () => this.performLogin()}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Register')}>
+        <TouchableOpacity style={styles.button} disabled={this.state.fetching} onPress={() => this.props.navigation.navigate('Register')}>
           <Text style={styles.buttonText}>Registrate</Text>
         </TouchableOpacity>
     </View>

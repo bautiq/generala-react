@@ -2,23 +2,14 @@ import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
 import Constants from '../../Constantes';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import DificultadService from '../services/DificultadService';
-import Game from './Game';
-/*
-Example use in view:
-import RankingService from './app/services/RankingService';
+import deviceStorage from '../services/DeviceStorage';
 
-new RankingService().getRanking( function (response){ 
-    console.log(response);
-  });
-*/
+
 export default class Dificultad extends Component {
 
   constructor(props) {
     super(props);
-
+    this.desloguearse = this.desloguearse.bind(this);
   }
 
   aceptarDificultad(value){
@@ -41,6 +32,12 @@ export default class Dificultad extends Component {
     return tiros;
   }
 
+  
+  desloguearse = () => {
+    deviceStorage.deleteUser();
+    this.props.navigation.navigate('Login');
+  }
+
   render() {
 
     return (
@@ -53,6 +50,9 @@ export default class Dificultad extends Component {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => this.aceptarDificultad("dificil")}>
           <Text style={styles.buttonText}>Dificil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.disconnect} onPress={() => this.desloguearse()}>
+          <Text style={styles.buttonText}>Desloguearse</Text>
         </TouchableOpacity>
       </View>
     );
@@ -70,6 +70,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#59cbbd',
+    marginTop: 80,
+  },
+  disconnect: {
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'red',
     marginTop: 80,
   },
   buttonText: {

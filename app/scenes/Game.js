@@ -47,10 +47,10 @@ export default class Game extends Component {
                 </View>            
                 <Text style={styles.resultado}>Tiros restantes: {this.state.tiros}</Text>
                 <Text style={styles.resultado}>Puntos: {this.state.puntaje}</Text>
-                <CheckBox title='Escalera(20)' checked={this.state.juegos.escalera} disabled="true" />
-                <CheckBox title='Full(30)' checked={this.state.juegos.full} disabled="true" />
-                <CheckBox title='Poker(40)' checked={this.state.juegos.poker} disabled="true" />
-                <CheckBox title='Generala(50)' checked={this.state.juegos.generala} disabled="true" />
+                <CheckBox title='Escalera(20)' style={styles.checkbox} checked={this.state.juegos.escalera} disabled="true" />
+                <CheckBox title='Full(30)' style={styles.checkbox} checked={this.state.juegos.full} disabled="true" />
+                <CheckBox title='Poker(40)' style={styles.checkbox} checked={this.state.juegos.poker} disabled="true" />
+                <CheckBox title='Generala(50)' style={styles.checkbox} checked={this.state.juegos.generala} disabled="true" />
                 <Text style={styles.resultado}>{this.state.juego}</Text>
                 <View style={styles.botonContainer}>
                     <Button title={this.state.btnGirarTitle} disabled={this.state.btnGirarDisabled} onPress={() => this.girar()} />
@@ -181,6 +181,9 @@ export default class Game extends Component {
         alignItems: "center",
         textAlign: "center",
         justifyContent: "center"
+    },
+    checkbox: {
+        width: Constants.MAX_WIDTH
     },
     dadosContainer: {
         // height: 60,

@@ -2,6 +2,7 @@ import React, { Component }from 'react';
 import { ActivityIndicator, StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
 import Constants from '../../Constantes';
 import UserService from '../services/UserService';
+import deviceStorage from '../services/DeviceStorage';
 
 export default class Register extends Component {
 
@@ -27,7 +28,7 @@ performRegister = () => {
     if (!!response && !!response.data.usuario) {
       
        this.props.navigation.navigate('Dificultad')
-      // TODO: guardar en local storage el user
+       deviceStorage.saveUser(response.data.usuario);
       
     } else if (!!error){
       console.log(error)
@@ -48,7 +49,7 @@ performRegister = () => {
         underlineColor={'transparent'} placeholderTextColor= "white" onChangeText={(text) => this.state.email = text} />
         <TextInput style={styles.textinput} placeholder="Ingresa tu contraseña"
         underlineColor={'transparent'} placeholderTextColor= "white" onChangeText={(text) => this.state.pass = text} />
-        <TouchableOpacity style={styles.button} onPress = { this.performRegister}>
+        <TouchableOpacity style={styles.button} disabled={this.state.fetching} onPress = {() => this.performRegister()}>
           <Text style={styles.buttonText}>Registrar</Text>
         </TouchableOpacity>
     </View>
