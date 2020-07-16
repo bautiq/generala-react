@@ -6,7 +6,6 @@ import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture
 import Dado from '../components/Dado'
 import { CheckBox } from 'react-native-elements'
 import UserService from '../services/UserService';
-import deviceStorage from '../services/DeviceStorage';
 
 
 
