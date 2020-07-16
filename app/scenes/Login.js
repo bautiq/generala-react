@@ -77,15 +77,16 @@ export default class Login extends Component {
         placeholderTextColor = "white" autoCapitalize="none"
         autoCompleteType="email"
         textContentType="emailAddress"
+        onSubmitEditing={() => { this.secondTextInput.focus(); }}
         returnKeyType = "done"/>
         
         <TextInput style={[styles.textinput , this.state.passError ? styles.invalid : null]} placeholder = "Ingresa tu contraseña"
         underlineColor={'transparent'}
         onChangeText = {(text) => this.validatePassword(text)}
          placeholderTextColor = "white" secureTextEntry autoCapitalize="none"
+         ref={(input) => { this.secondTextInput = input; }}
          returnKeyType = "go"
          onSubmitEditing= {() => this.performLogin()}
-
          />
         
         <TouchableOpacity style={styles.button} disabled={this.state.fetching || !this.state.email || !this.state.pass} onPress={
