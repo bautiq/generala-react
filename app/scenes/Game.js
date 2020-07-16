@@ -35,8 +35,7 @@ export default class Game extends Component {
             giros: this.girosPermitidos,
             puntaje: 0
         }
-        this.userId = 3;
-        // TODO: this.userId = props.route.params.userId;   
+        this.userId = props.route.params.usuario.id;
     }
     
     render(){

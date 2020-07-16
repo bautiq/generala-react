@@ -2,7 +2,8 @@ import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
 import Constants from '../../Constantes';
-import deviceStorage from '../services/DeviceStorage';
+import deviceStorage from '../core/DeviceStorage';
+import HeaderText from '../components/HeaderText';
 
 
 export default class Dificultad extends Component {
@@ -13,7 +14,11 @@ export default class Dificultad extends Component {
   }
 
   aceptarDificultad(value){
-    this.props.navigation.navigate('Game', {tiros : this.tirosDificultad(value) });
+    deviceStorage.loadUser(function(error, user){
+      if (!!user) {
+        this.props.navigation.navigate('Game', {usuario: JSON.parse(user), tiros : this.tirosDificultad(value) });
+      }
+    }.bind(this));
   }
 
   tirosDificultad(value) {
@@ -42,6 +47,7 @@ export default class Dificultad extends Component {
 
     return (
       <View style={styles.container}>
+        <HeaderText text="Elija una dificultad para comenzar"/>
         <TouchableOpacity style={styles.button} onPress={() => this.aceptarDificultad("facil")} >
           <Text style={styles.buttonText}>Facil</Text>
         </TouchableOpacity>
