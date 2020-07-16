@@ -54,7 +54,7 @@ export default class Game extends Component {
                 <View style={styles.botonContainer}>
                     <Button title={this.state.btnGirarTitle} disabled={this.state.btnGirarDisabled} onPress={() => this.girar()} />
                     <Button title={this.state.btnTitle} onPress={() => this.finalizarTiro()} />
-                    <Button title={this.state.btnTitle} onPress={() => this.finalizarPartida()} />
+                    <Button title='Finalizar partida' onPress={() => this.finalizarPartida()} />
                 </View>
             </View>
         );
@@ -182,9 +182,9 @@ export default class Game extends Component {
         )
     }
     getUserId = () => {
-        deviceStorage.getUserId(function(error, userId){
-          if(!!userId){
-            return userId;
+        deviceStorage.loadUser(function(error, user){
+          if(!!user){
+            return JSON.parse(user).id;
           }
         }.bind(this))
     }
