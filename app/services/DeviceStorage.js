@@ -12,6 +12,7 @@ const deviceStorage = {
 
     async saveUser(user){
         await AsyncStorage.setItem('USER', JSON.stringify(user));
+        await AsyncStorage.setItem('USER_ID', user.id);
     },
 
     async loadUser(callback) {
@@ -20,6 +21,14 @@ const deviceStorage = {
         } catch (error) {
             console.log('AsyncStorage Error: ' + error.message);
         }
+    },
+
+    async getUserId(callback) {
+        try {
+            await AsyncStorage.getItem('USER_ID', callback);
+         } catch (error) {
+             console.log('AsyncStorage Error: ' + error.message);
+         }
     },
 
     async deleteUser() {

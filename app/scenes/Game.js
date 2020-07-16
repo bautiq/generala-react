@@ -6,6 +6,7 @@ import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture
 import Dado from '../components/Dado'
 import { CheckBox } from 'react-native-elements'
 import UserService from '../services/UserService';
+import deviceStorage from '../services/DeviceStorage';
 
 
 
@@ -35,8 +36,6 @@ export default class Game extends Component {
             giros: this.girosPermitidos,
             puntaje: 0
         }
-        this.userId = 3;
-        // TODO: this.userId = props.route.params.userId;   
     }
     
     render(){
@@ -55,6 +54,7 @@ export default class Game extends Component {
                 <View style={styles.botonContainer}>
                     <Button title={this.state.btnGirarTitle} disabled={this.state.btnGirarDisabled} onPress={() => this.girar()} />
                     <Button title={this.state.btnTitle} onPress={() => this.finalizarTiro()} />
+                    <Button title={this.state.btnTitle} onPress={() => this.finalizarPartida()} />
                 </View>
             </View>
         );
@@ -93,12 +93,18 @@ export default class Game extends Component {
             this.setState({juego: '', btnTitle: 'Finalizar tiro', btnGirarTitle: "Girar", btnGirarDisabled: false, giros: this.girosPermitidos})
         }
         else {        
-            //TODO: que espere a que el update finalice para redirigir a la pantalla de Ranking, reemplazando el timeout.
-            this.updateUserScore();
-            setTimeout(() => {
-                this.props.navigation.navigate('Ranking');
-            }, 3000);                      
+            this.abrirRanking();                    
         }
+    }
+    finalizarPartida() {
+        this.abrirRanking();
+    }
+    abrirRanking() {
+        //TODO: que espere a que el update finalice para redirigir a la pantalla de Ranking, reemplazando el timeout.
+        this.updateUserScore();
+        setTimeout(() => {
+            this.props.navigation.navigate('Ranking');
+        }, 3000); 
     }
     calcularJuego() {
         this.juego = '';
@@ -113,35 +119,45 @@ export default class Game extends Component {
                 this.cincoParaEscalera++;
                 if (this.cincoParaEscalera == 5) {
                     this.juego = 'escalera';
-                    this.state.juegos.escalera = true;
-                    this.state.puntaje = this.state.puntaje + 20;
+                    if (!this.state.juegos.escalera){
+                        this.state.juegos.escalera = true;
+                        this.state.puntaje = this.state.puntaje + 20;
+                    }                    
                 }                    
             }                
             else if (this.element == 2) {
                 this.dosDelFull = true;
                 if (this.tresDelFull){
                     this.juego = 'full';
-                    this.state.juegos.full = true;
-                    this.state.puntaje = this.state.puntaje + 30;
+                    if (!this.state.juegos.full) {
+                        this.state.juegos.full = true;
+                        this.state.puntaje = this.state.puntaje + 30;
+                    }                    
                 }                    
             }                
             else if (this.element == 3) {
                 this.tresDelFull = true;
                 if (this.dosDelFull) {
                     this.juego = 'full';
-                    this.state.juegos.full = true;
-                    this.state.puntaje = this.state.puntaje + 30;
+                    if (!this.state.juegos.full) {
+                        this.state.juegos.full = true;
+                        this.state.puntaje = this.state.puntaje + 30;
+                    }     
                 }                    
             }                
             else if (this.element == 4) {
                 this.juego = 'poker';
-                this.state.juegos.poker = true;
-                this.state.puntaje = this.state.puntaje + 40;
+                if (!this.state.juegos.poker) {
+                    this.state.juegos.poker = true;
+                    this.state.puntaje = this.state.puntaje + 40;
+                }
             }                
             else if (this.element == 5) {
                 this.juego = 'generala';
-                this.state.juegos.generala = true;
-                this.state.puntaje = this.state.puntaje + 50;
+                if (!this.state.juegos.generala) {
+                    this.state.juegos.generala = true;
+                    this.state.puntaje = this.state.puntaje + 50;
+                }                
             }                
             if (this.index == this.apariciones.length)
                 this.juego ='nada';
@@ -160,10 +176,17 @@ export default class Game extends Component {
         });
         return this.result;
     }
-    updateUserScore() {
+    updateUserScore() {        
         new UserService().updateUserScore( (response, error) =>
-            console.log(response), this.userId, this.state.puntaje
+            console.log(response), this.getUserId(), this.state.puntaje
         )
+    }
+    getUserId = () => {
+        deviceStorage.getUserId(function(error, userId){
+          if(!!userId){
+            return userId;
+          }
+        }.bind(this))
     }
 }
 
