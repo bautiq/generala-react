@@ -31,13 +31,12 @@ export default class Game extends Component {
                 poker: false,
                 generala: false
             },
-            tiros: 4,
-            // TODO: tiros: this.props.tiros,
+            tiros: props.route.params.tiros,            
             giros: this.girosPermitidos,
             puntaje: 0
         }
-        this.userId = 1;
-        // TODO: this.userId = this.props.userId;   
+        this.userId = 2;
+        // TODO: this.userId = props.route.params.userId;   
     }
     
     render(){
@@ -96,7 +95,7 @@ export default class Game extends Component {
         else {        
             //TODO: que espere a que el update finalice para redirigir a la pantalla de Ranking.
             this.updateUserScore();
-            this.props.navigation.navigate('Ranking');            
+            this.props.navigation.navigate('Ranking');                     
         }
     }
     calcularJuego() {
