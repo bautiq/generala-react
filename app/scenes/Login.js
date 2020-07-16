@@ -1,29 +1,74 @@
 import 'react-native-gesture-handler';
 import React, { Component} from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, TextInput, Touchable, TouchableOpacity } from 'react-native';
+import UserService from '../services/UserService';
+import deviceStorage from '../services/DeviceStorage';
+
 import Constants from '../../Constantes';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 
 export default class Login extends Component {
   
   constructor(props){
       super(props);
+
+      this.state ={
+        pass : '',
+        email : '',
+        fetching: false
+      }
+      this.userService = new UserService();
+      this.performLogin = this.performLogin.bind(this);
+      this.checkIfLogged = this.checkIfLogged.bind(this);
   }
+
+  checkIfLogged = () => {
+    deviceStorage.loadUser(function(error, user){
+      if(!!user){
+        this.props.navigation.navigate('Dificultad')
+      }
+    }.bind(this))
+  }
+
+  performLogin = () => {
+    
+    this.setState({'fetching': true});
+    
+    this.userService.login( function (response, error){
+      
+      this.setState({'fetching': false});
+      if (!!response && !!response.data.usuario) {
+        
+         this.props.navigation.navigate('Dificultad');
+         deviceStorage.saveUser(response.data.usuario);
+        
+      } else if (!!error){
+        console.log(error);
+        //TODO: ver de mostrar error
+      }
+    }.bind(this) ,{"pass": this.state.pass, "mail": this.state.email})
+  }
+
   render(){
- 
+   this.checkIfLogged()
   return (
     <View style={styles.container}>
-        <Text style={styles.header}>Log-In</Text>
+       <ActivityIndicator size="large" style={styles.spinner} animating={this.state.fetching}/>
+        <Text style={styles.header}>Inicie sesion para jugar</Text>
         <TextInput style={styles.textinput} placeholder="Ingresa tu email"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
-        <TextInput style={styles.textinput} placeholder="Ingresa tu contraseña"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
+        underlineColor={'transparent'}
+        onChangeText={(text) => this.state.email = text}
+        placeholderTextColor = "white" />
+        <TextInput style={styles.textinput} placeholder = "Ingresa tu contraseña"
+        underlineColor={'transparent'}
+        onChangeText = {(text) => this.state.pass = text}
+         placeholderTextColor = "white" secureTextEntry/>
         
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Logearse</Text>
+        <TouchableOpacity style={styles.button} disabled={this.state.fetching} onPress={
+          () => this.performLogin()}>
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Register')}>
+
+        <TouchableOpacity style={styles.button} disabled={this.state.fetching} onPress={() => this.props.navigation.navigate('Register')}>
           <Text style={styles.buttonText}>Registrate</Text>
         </TouchableOpacity>
     </View>
@@ -68,6 +113,11 @@ const styles = StyleSheet.create({
   buttonText:{
     color: '#fff',
     fontWeight: 'bold'
-  }
+  },
+  spinner:{
+    flex: 1,
+    alignSelf: 'center',
+    position: 'absolute'
+}
 
 });

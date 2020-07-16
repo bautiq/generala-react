@@ -1,27 +1,55 @@
 import React, { Component }from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View, Button, TextInput, Touchable, TouchableOpacity } from 'react-native';
 import Constants from '../../Constantes';
+import UserService from '../services/UserService';
+import deviceStorage from '../services/DeviceStorage';
 
 export default class Register extends Component {
-  constructor(props){
-      super(props);
-      
-  }
-  render(){
 
- 
+  constructor(props) {
+    super(props);
+    this.state ={
+      pass : '',
+      email : '',
+      nombre: '',
+      fetching: false
+    }
+    this.performRegister = this.performRegister.bind(this);
+    this.userService = new UserService();
+}
+
+performRegister = () => {
+    this.setState({'fetching': true});
+
+    this.userService.register(function (response, error){
+
+    this.setState({'fetching': false});
+
+    if (!!response && !!response.data.usuario) {
+      
+       this.props.navigation.navigate('Dificultad')
+       deviceStorage.saveUser(response.data.usuario);
+      
+    } else if (!!error){
+      console.log(error)
+      //TODO: ver de mostrar error
+    }
+  }.bind(this) ,{"pass": this.state.pass, "mail": this.state.email, "nombre": this.state.nombre})
+
+}
+
+  render(){ 
   return (
     <View style={styles.container}>
+      <ActivityIndicator size="large" style={styles.spinner} animating={this.state.fetching}/>
         <Text style={styles.header}>Registrate</Text>
         <TextInput style={styles.textinput} placeholder="Ingresa tu nombre"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
-        <TextInput style={styles.textinput} placeholder="Ingresa tu edad"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
+        underlineColor={'transparent'} placeholderTextColor= "white" onChangeText={(text) => this.state.nombre = text} />
         <TextInput style={styles.textinput} placeholder="Ingresa tu email"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
+        underlineColor={'transparent'} placeholderTextColor= "white" onChangeText={(text) => this.state.email = text} />
         <TextInput style={styles.textinput} placeholder="Ingresa tu contraseña"
-        underlineColor={'transparent'} placeholderTextColor= "white" />
-        <TouchableOpacity style={styles.button}>
+        underlineColor={'transparent'} placeholderTextColor= "white" onChangeText={(text) => this.state.pass = text} />
+        <TouchableOpacity style={styles.button} disabled={this.state.fetching} onPress = {() => this.performRegister()}>
           <Text style={styles.buttonText}>Registrar</Text>
         </TouchableOpacity>
     </View>
@@ -63,6 +91,10 @@ const styles = StyleSheet.create({
   buttonText:{
     color: '#fff',
     fontWeight: 'bold'
-  }
-
+  },
+  spinner:{
+    flex: 1,
+    alignSelf: 'center',
+    position: 'absolute'
+}
 });

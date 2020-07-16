@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { StyleSheet, Text, SafeAreaView, ScrollView, View, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, SafeAreaView, ScrollView, View, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import RankingCell from '../components/RankingCell';
 import RankingService from '../services/RankingService';
@@ -7,7 +7,8 @@ import RankingService from '../services/RankingService';
 export default class Ranking extends Component {
 
   state = {
-    ranking: []
+    ranking: [],
+    fetching: false
  }
 constructor(){
   super()
@@ -15,12 +16,14 @@ constructor(){
 }
 
  componentDidMount= () => {
+   this.setState({'fetching': true});
     new RankingService().getRanking( (response, error) =>
     this.rankingReceived(response)
   )
  }
 
   rankingReceived = (response) => {
+    this.setState({'fetching': false});
     if (!!response && response.data){
       this.setState({ranking: response.data}) 
     }
@@ -32,6 +35,7 @@ constructor(){
       return <RankingCell rankItem={item}/>
     })
     return(<SafeAreaView style={styles.container}> 
+      <ActivityIndicator size="large" style={styles.spinner} animating={this.state.fetching}/>
       <Text style={styles.title}>Ranking</Text>
       <ScrollView style={styles.scrollView}>
  
@@ -75,5 +79,10 @@ const styles = StyleSheet.create({
       divider:{
         backgroundColor: 'black',
         height: 1
-    }
+    },
+    spinner:{
+      alignSelf: 'center',
+      position: 'absolute'
+  }
+  
 });
