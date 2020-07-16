@@ -35,7 +35,7 @@ export default class Game extends Component {
             giros: this.girosPermitidos,
             puntaje: 0
         }
-        this.userId = 2;
+        this.userId = 3;
         // TODO: this.userId = props.route.params.userId;   
     }
     
@@ -78,8 +78,8 @@ export default class Game extends Component {
     finalizarTiro() {        
         if (this.state.btnTitle == 'Finalizar tiro'){
             this.title = '';
-            if (this.state.tiros == 1) {
-                this.title = 'No tienes más tiros, mira el ranking';
+            if (this.state.tiros == 1) {            
+                this.title = 'No tienes más tiros, mira el ranking';                
             }                
             else
                 this.title = 'Nuevo tiro';     
@@ -93,9 +93,11 @@ export default class Game extends Component {
             this.setState({juego: '', btnTitle: 'Finalizar tiro', btnGirarTitle: "Girar", btnGirarDisabled: false, giros: this.girosPermitidos})
         }
         else {        
-            //TODO: que espere a que el update finalice para redirigir a la pantalla de Ranking.
+            //TODO: que espere a que el update finalice para redirigir a la pantalla de Ranking, reemplazando el timeout.
             this.updateUserScore();
-            this.props.navigation.navigate('Ranking');                     
+            setTimeout(() => {
+                this.props.navigation.navigate('Ranking');
+            }, 3000);                      
         }
     }
     calcularJuego() {
@@ -158,7 +160,7 @@ export default class Game extends Component {
         });
         return this.result;
     }
-    updateUserScore = () => {
+    updateUserScore() {
         new UserService().updateUserScore( (response, error) =>
             console.log(response), this.userId, this.state.puntaje
         )
