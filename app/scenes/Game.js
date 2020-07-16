@@ -100,7 +100,6 @@ export default class Game extends Component {
         this.abrirRanking();
     }
     abrirRanking() {
-        //TODO: que espere a que el update finalice para redirigir a la pantalla de Ranking, reemplazando el timeout.
         this.updateUserScore();
     }
     calcularJuego() {
