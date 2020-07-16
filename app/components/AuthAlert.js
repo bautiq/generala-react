@@ -4,10 +4,10 @@ import {Alert} from 'react-native';
 const AuthAlert = {
 
     showAlert(error)  {
-        console.log(error);
+        const errorMessage = !!error && !!error.response && !!error.response.data ? error.response.data : "Hubo un problema en la conexion";
         Alert.alert(
             "Error",
-            error.response.data,[
+            errorMessage,[
               { text: "OK"}],
             { cancelable: false }
           );
