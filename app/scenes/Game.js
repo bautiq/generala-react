@@ -94,7 +94,7 @@ export default class Game extends Component {
             this.setState({juego: '', btnTitle: 'Finalizar tiro', btnGirarTitle: "Girar", btnGirarDisabled: false, giros: this.girosPermitidos})
         }
         else {        
-            this.abrirRanking();                    
+            this.abrirRanking();         
         }
     }
     finalizarPartida() {
@@ -179,15 +179,8 @@ export default class Game extends Component {
     }
     updateUserScore() {        
         new UserService().updateUserScore( (response, error) =>
-            console.log(response), this.getUserId(), this.state.puntaje
+            console.log(response), this.userId, this.state.puntaje
         )
-    }
-    getUserId = () => {
-        deviceStorage.loadUser(function(error, user){
-          if(!!user){
-            return JSON.parse(user).id;
-          }
-        }.bind(this))
     }
 }
 
